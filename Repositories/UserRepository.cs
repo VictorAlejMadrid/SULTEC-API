@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using SULTEC_API.Data;
 using SULTEC_API.Data.Dtos.UserDtos;
-using SULTEC_API.Repositories.Interfaces;
+using SULTEC_API.Models;
 
 namespace SULTEC_API.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository
     {
         private readonly SultecContext _context;
         private readonly IMapper _mapper;
@@ -17,11 +17,11 @@ namespace SULTEC_API.Repositories
             _mapper = mapper;
         }
 
-        public async Task<ReadUserDto> GetUserByIdAsync(string id)
+        public async Task<User> GetUserByIdAsync(string id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(user => user.Id == id);
 
-            return _mapper.Map<ReadUserDto>(user);
+            return user;
         }
 
         public async Task<IEnumerable<ReadUserDto>> GetUsersAsync(int pageNumber, int pageSize)

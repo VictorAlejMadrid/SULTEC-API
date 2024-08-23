@@ -1,62 +1,140 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using SULTEC_API.Data.Dtos;
+using SULTEC_API.Data.DataModel;
 using SULTEC_API.Data.Dtos.UserDtos;
 using SULTEC_API.Models;
-using SULTEC_API.Repositories.Interfaces;
+using SULTEC_API.Repositories;
 
 namespace SULTEC_API.Services;
 
-public class UserService : ServiceBase
+public class UserService 
 {
     private readonly IMapper _mapper;
     private readonly UserManager<User> _manager;
     private readonly SignInManager<User> _signInManager;
-    private readonly IUserRepository _userRepository;
+    private readonly UserRepository _userRepository;
+    private readonly TokenService _tokenService;
 
     public UserService(
         IMapper mapper,
         UserManager<User> manager,
         SignInManager<User> signInManager,
-        IUserRepository userRepository)
+        UserRepository userRepository,
+        TokenService tokenService)
     {
         _mapper = mapper;
         _manager = manager;
         _signInManager = signInManager;
         _userRepository = userRepository;
+        _tokenService = tokenService;
     }
 
     public async Task<Result> RegisterUser(User user, string password)
     {
-        var result = await _manager.CreateAsync(user, password);
+        var result = new Result();
 
-        if (!result.Succeeded)
+        var operationResult = await _manager.CreateAsync(user, password);
+
+        if (!operationResult.Succeeded)
         {
-            Result.Success = false;
-            Result.Errors.Add(result.Errors.First().Description);
+            result.Success = false;
+            result.Errors.Add(operationResult.Errors.First().Description);
         }
 
-        return Result;
+        return result;
     }
 
     public async Task<Result> GetUserByIdAsync(string id)
     {
+        var result = new Result();
+
         var user = await _userRepository.GetUserByIdAsync(id);
 
         if (user == null)
         {
-            Result.Errors.Add("Usuário não encontrado");
-            return Result;
+            result.Errors.Add("Usuário não encontrado");
+            return result;
         }
 
-        Result.Data = user;
+        result.Data = _mapper.Map<ReadUserDto>(user);
 
-        return Result;
+        return result;
     }
 
-    public async Task<IEnumerable<ReadUserDto>> GetUsersAsync(int pageNumber, int pageSize)
+    public async Task<PaginatedResult> GetUsersAsync(int pageNumber, int pageSize)
     {
-        return await _userRepository.GetUsersAsync(pageNumber, pageSize);
+        int totalItems = await _userRepository.GetUsersCount();
+
+        var result = new PaginatedResult(pageNumber, pageSize, totalItems);
+
+        var correctPageNumber = pageNumber - 1;
+
+        if (pageSize * correctPageNumber > totalItems)
+        {
+            result.Success = false;
+            result.Pagination.HasNextPage = false;
+            result.Errors.Add("Page number exceds the total number of pages");
+
+            return result;
+        }
+
+        result.Data = await _userRepository.GetUsersAsync(correctPageNumber, pageSize);
+
+        return result;
+    }
+
+    public async Task<Result> Login(LoginUserDto loginUserDto)
+    {
+        var result = new Result();
+
+        var signResult = await _signInManager
+            .PasswordSignInAsync(loginUserDto.UserName, loginUserDto.Password, false, false);
+
+        if (!signResult.Succeeded)
+        {
+            result.Success = false;
+            result.Errors.Add("Wrong username or password");
+
+            return result;
+        }
+
+        var user = _signInManager
+            .UserManager.Users.FirstOrDefault(user =>
+            user.NormalizedUserName!.Equals(loginUserDto.UserName.ToUpper()));
+
+        var token = _tokenService.GenerateToken(user!);
+
+        result.Data = token;
+
+        return result;
+    }
+
+    public async Task<Result> ChangePasswordAsync(ChangePasswordUserDto newPasswordUserDto)
+    {
+        var result = new Result();
+
+        var user = await _userRepository.GetUserByIdAsync(newPasswordUserDto.Id);
+
+        if (user is null)
+        {
+            result.Success = false;
+            result.Errors.Add("Invalid User Identifier");
+
+            return result;
+        }
+
+        var changeResult = await _manager.ChangePasswordAsync(user,
+            newPasswordUserDto.Password,
+            newPasswordUserDto.NewPassword);
+
+        if (!changeResult.Succeeded)
+        {
+            result.Success = false;
+            result.Errors.Add(changeResult.Errors.First().Description);
+
+            return result;
+        }
+
+        return result;
     }
 }

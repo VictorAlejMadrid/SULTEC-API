@@ -1,14 +1,12 @@
-﻿using SULTEC_API.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SULTEC_API.Data.Dtos.UserDtos;
 
-public class CreateUserDto
+public class LoginUserDto
 {
-    [Required(ErrorMessage = "The username field is required")]
+    [Required(ErrorMessage = "The username field is required to signin")]
     public string UserName { get; set; }
 
     [Required(ErrorMessage = "The password field is required to signin")]
-    [DataType(DataType.Password)]
     public string Password { get; set; }
 }

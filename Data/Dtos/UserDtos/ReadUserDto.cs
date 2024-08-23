@@ -1,7 +1,9 @@
-﻿namespace SULTEC_API.Data.Dtos.UserDtos;
+﻿using SULTEC_API.Models;
 
-public class ReadUserDto : DtoBase
+namespace SULTEC_API.Data.Dtos.UserDtos;
+
+public class ReadUserDto
 {
-    public int Id { get; set; }
+    public string Id { get; set; }
     public string UserName { get; set; }
 }

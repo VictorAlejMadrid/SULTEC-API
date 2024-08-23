@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SULTEC_API.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedUserTable : Migration
+    public partial class AddedUserAndLogin : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

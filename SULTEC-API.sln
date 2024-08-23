@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SULTEC-API", "SULTEC-API.csproj", "{1EBE2058-995C-4E9E-B27B-A018A427B43C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SULTEC-API", "SULTEC-API.csproj", "{1EBE2058-995C-4E9E-B27B-A018A427B43C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SULTEC-API_TESTS", "..\SULTEC-API_TESTS\SULTEC-API_TESTS.csproj", "{9E24C52F-826C-44F0-ADDE-D76CE3D6794C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{1EBE2058-995C-4E9E-B27B-A018A427B43C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EBE2058-995C-4E9E-B27B-A018A427B43C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EBE2058-995C-4E9E-B27B-A018A427B43C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E24C52F-826C-44F0-ADDE-D76CE3D6794C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E24C52F-826C-44F0-ADDE-D76CE3D6794C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E24C52F-826C-44F0-ADDE-D76CE3D6794C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E24C52F-826C-44F0-ADDE-D76CE3D6794C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

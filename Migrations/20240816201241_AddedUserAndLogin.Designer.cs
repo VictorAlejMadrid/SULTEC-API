@@ -12,8 +12,8 @@ using SULTEC_API.Data;
 namespace SULTEC_API.Migrations
 {
     [DbContext(typeof(SultecContext))]
-    [Migration("20240815171228_Added User Table")]
-    partial class AddedUserTable
+    [Migration("20240816201241_AddedUserAndLogin")]
+    partial class AddedUserAndLogin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

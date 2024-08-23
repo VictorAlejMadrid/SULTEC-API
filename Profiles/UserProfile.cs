@@ -11,5 +11,7 @@ public class UserProfile : Profile
         CreateMap<CreateUserDto, User>();
 
         CreateMap<User, ReadUserDto>();
+        CreateMap<ChangePasswordUserDto, User>();
+
     }
 }

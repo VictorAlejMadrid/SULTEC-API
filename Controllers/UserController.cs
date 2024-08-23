@@ -22,7 +22,7 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost]
+    [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] CreateUserDto createUserDto)
     {
         var user = _mapper.Map<User>(createUserDto);
@@ -37,13 +37,24 @@ public class UserController : ControllerBase
             user);
     }
 
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginUserDto loginUserDto)
+    {
+        var token = await _userService.Login(loginUserDto);
+
+        return Ok(token);
+    }
+
     [HttpGet]
-    public async Task<IActionResult> GetUsers([FromQuery] int pageNumber, [FromQuery] int pageSize)
+    public async Task<IActionResult> GetUsers([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         var result = await _userService.GetUsersAsync(pageNumber, pageSize);
 
-        if (result is null || !result.Any())
-            return NotFound();
+        if (result.Data is null)
+            return NotFound(result);
+
+        if (result.Errors.Any())
+            return BadRequest(result.Errors);
 
         return Ok(result);
     }
@@ -57,5 +68,18 @@ public class UserController : ControllerBase
             return NotFound(result.Errors);
 
         return Ok(result.Data);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> ChangeUserPassword(ChangePasswordUserDto changePasswordUserDto)
+    {
+        var result = await _userService.ChangePasswordAsync(changePasswordUserDto);
+
+        if (result.Errors.Any())
+        {
+            return BadRequest(result.Errors);
+        }
+
+        return Ok(result);
     }
 }
