@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using SULTEC_API.Data;
 using SULTEC_API.Models;
 using SULTEC_API.Repositories;
 using SULTEC_API.Services;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,11 +57,19 @@ builder.Services
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<AddressService>();
+builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<TokenService>();
 
+builder.Services.AddScoped<AddressRepository>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<ClientRepository>();
 
-builder.Services.AddControllers();
+builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
+
+builder.Services.AddControllers(); //.AddJsonOptions(opts =>
+    //opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

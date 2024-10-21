@@ -1,10 +1,11 @@
-﻿namespace SULTEC_API.Data.DataModel;
+﻿using System.Net;
 
-public class Result
-{ 
+namespace SULTEC_API.Data.DataModel;
+
+public class Result<T>
+{
     public bool Success { get; set; } = true;
-
-    public object? Data { get; set; } = null;
-
+    public T? Data { get; set; }
+    public int Code { get; set; } = HttpStatusCode.OK.GetHashCode();
     public List<string> Errors { get; set; } = [];
 }

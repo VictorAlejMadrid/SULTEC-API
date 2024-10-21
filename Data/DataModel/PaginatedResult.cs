@@ -1,6 +1,6 @@
 ﻿namespace SULTEC_API.Data.DataModel;
 
-public class PaginatedResult : Result
+public class PaginatedResult<T> : Result<T>
 {
     public Pagination Pagination { get; set; }
 

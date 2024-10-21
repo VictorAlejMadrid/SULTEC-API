@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SULTEC_API.Data;
 
@@ -11,9 +12,11 @@ using SULTEC_API.Data;
 namespace SULTEC_API.Migrations
 {
     [DbContext(typeof(SultecContext))]
-    partial class SultecContextModelSnapshot : ModelSnapshot
+    [Migration("20241015192212_FixClientAndAdress")]
+    partial class FixClientAndAdress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +160,7 @@ namespace SULTEC_API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SULTEC_API.Models.Address", b =>
+            modelBuilder.Entity("SULTEC_API.Models.Adress", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -189,7 +192,7 @@ namespace SULTEC_API.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Adresses");
                 });
 
             modelBuilder.Entity("SULTEC_API.Models.Client", b =>
@@ -328,10 +331,10 @@ namespace SULTEC_API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SULTEC_API.Models.Address", b =>
+            modelBuilder.Entity("SULTEC_API.Models.Adress", b =>
                 {
                     b.HasOne("SULTEC_API.Models.Client", "Client")
-                        .WithMany("Addresses")
+                        .WithMany("Adresses")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -341,7 +344,7 @@ namespace SULTEC_API.Migrations
 
             modelBuilder.Entity("SULTEC_API.Models.Client", b =>
                 {
-                    b.Navigation("Addresses");
+                    b.Navigation("Adresses");
                 });
 #pragma warning restore 612, 618
         }
