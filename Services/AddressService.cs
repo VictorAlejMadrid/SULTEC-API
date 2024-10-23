@@ -56,6 +56,10 @@ public class AddressService
             return result;
         }
 
+        var totalPages = (int)Math.Round((decimal)totalItems / (decimal)pageSize);
+
+        result.Pagination.HasNextPage = pageNumber < totalPages;
+        result.Pagination.TotalPages = totalPages;
         result.Data = await _repository.GetAddressesAsync(correctPageNumber, pageSize);
 
         return result;

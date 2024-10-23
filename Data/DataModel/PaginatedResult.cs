@@ -11,6 +11,7 @@ public class PaginatedResult<T> : Result<T>
             PageSize = pageSize,
             TotalItems = totalItems,
             PageNumber = pageNumber,
+            TotalPages = 0,
             HasNextPage = true
         };
     }
@@ -20,6 +21,7 @@ public class Pagination
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
     public int TotalItems { get; set; }
+    public int TotalPages { get; set; }
     public bool HasNextPage { get; set; }
 }
 

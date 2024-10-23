@@ -79,8 +79,12 @@ public class ClientService
 
             return result;
         }
-
+        var totalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)pageSize);
+        
         var clients = await _clientRepository.GetClientsAsync(correctPageNumber, pageSize);
+
+        result.Pagination.HasNextPage = pageNumber < totalPages;
+        result.Pagination.TotalPages = totalPages;
         result.Data = clients; 
 
         return result;
@@ -137,7 +141,10 @@ public class ClientService
 
             return result;
         }
+        var totalPages = (int)Math.Ceiling((decimal)totalItems / (decimal)pageSize);
 
+        result.Pagination.HasNextPage = pageNumber < totalPages;
+        result.Pagination.TotalPages = totalPages;
         result.Data = clients;
 
         return result;

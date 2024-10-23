@@ -67,8 +67,7 @@ builder.Services.AddScoped<ClientRepository>();
 
 builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
 
-builder.Services.AddControllers(); //.AddJsonOptions(opts =>
-    //opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddControllers(); 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
